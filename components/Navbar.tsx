@@ -23,7 +23,7 @@ export default function Navbar() {
     localStorage.setItem("theme", newTheme);
   };
 
-  const navItems = ["Home", "About Us", "Services", "Portfolio", "Contact"];
+  const navItems = ["Home", "About Us", "Services", "Team", "Contact"];
 
   return (
     <motion.nav
@@ -31,12 +31,12 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
       // Use bg-white for light mode and ensure text colors adapt
-      className="w-full flex items-center justify-between px-6 py-4 bg-white dark:bg-black shadow-md sticky top-0 z-10" 
+      className="w-full flex items-center justify-between px-8 py-4 bg-white dark:bg-black shadow-md sticky top-0 z-10" 
     >
       {/* Logo: Matches 'S Shraddha' structure from image */}
     <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-2 cursor-pointer">
   {/* Logo Icon (Replace '/logo_s.png' with your actual path if different) */}
-  <img src="/logo1.png" alt="Shraddha Logo S" className="w-30 h-10" /> 
+  <img src="/logo1.png" alt="Shraddha Logo S" className="w-40 h-11" /> 
   
   {/* Company Name (Shraddha) */}
 </motion.div>
