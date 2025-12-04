@@ -2,92 +2,60 @@
 import { motion } from "framer-motion";
 
 const teamMembers = [
-  {
-    name: "Sujan",
-    role: "Founder & CEO",
-    image: "/team/sujan.jpg", // replace with your image
-  },
-  {
-    name: "Shradha Reddy",
-    role: "Lead Developer",
-    image: "/team/shradha.jpg",
-  },
-  {
-    name: "Ravi Kumar",
-    role: "UI/UX Designer",
-    image: "/team/ravi.jpg",
-  },
-  {
-    name: "Ananya Das",
-    role: "Marketing Head",
-    image: "/team/ananya.jpg",
-  },
+  { name: "Sujan", role: "Founder & CEO", image: "/33.png" },
+  { name: "Shradha Reddy", role: "Lead Developer", image: "22.png" },
+  { name: "Ravi Kumar", role: "UI/UX Designer", image: "/11.png" },
+  { name: "Ananya Das", role: "Marketing Head", image: "/11.png" },
 ];
 
-export default function TeamPage() {
+export default function TeamSection() {
   return (
-    <div className="w-full bg-gray-50 px-6 py-24 max-w-7xl mx-auto">
-      {/* Header Section */}
+    <div className="w-full bg-gray-50 px-6 sm:px-12 py-24 max-w-7xl mx-auto">
+      {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-20"
+        className="text-center mb-16"
       >
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-orange-500 font-semibold tracking-wide"
-        >
-          Meet the Team
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-5xl font-extrabold mt-2 leading-tight"
-        >
-          The People Behind <span className="text-orange-500">Our Success</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-gray-500 mt-4 max-w-3xl mx-auto text-lg"
-        >
-          Our talented team makes everything possible. Scroll to see the amazing
-          people driving our mission forward.
-        </motion.p>
+        <p className="text-orange-500 font-semibold tracking-wide">Meet The Innovators</p>
+        <h2 className="text-4xl font-extrabold mt-2">The People Behind Our Mission</h2>
+        <p className="text-gray-500 mt-4 max-w-2xl mx-auto text-lg">
+          We are proud of our team — experienced, dedicated and passionate about building solutions.
+        </p>
       </motion.div>
 
-      {/* Horizontal Scroll Team Section */}
-      <motion.div
-        className="flex space-x-12 overflow-x-auto scrollbar-hide py-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
+      {/* Team Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
         {teamMembers.map((member, index) => (
           <motion.div
             key={index}
             whileHover={{ scale: 1.05 }}
-            className="min-w-[280px] bg-white rounded-3xl p-6 flex-shrink-0 shadow-lg hover:shadow-2xl transition duration-300"
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="group relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer"
           >
-            <div className="w-36 h-36 rounded-full overflow-hidden mb-4 mx-auto border-4 border-orange-100 shadow-md">
+            {/* Gradient overlay on hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-gradient-to-br from-[#F54E02]/20 to-transparent transition-opacity duration-300 pointer-events-none" />
+
+            {/* Profile Image */}
+            <div className="w-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 p-6 overflow-hidden">
               <img
                 src={member.image}
                 alt={member.name}
-                className="w-full h-full object-cover"
+                className="w-40 h-40 object-contain transition-transform duration-300 group-hover:scale-110"
               />
             </div>
-            <h3 className="text-xl font-semibold text-center">{member.name}</h3>
-            <p className="text-gray-500 text-center">{member.role}</p>
+
+            {/* Info */}
+            <div className="p-4 sm:p-6 text-center relative z-10">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white transition-colors group-hover:text-orange-600">
+                {member.name}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 mt-1 text-sm sm:text-base">{member.role}</p>
+            </div>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
