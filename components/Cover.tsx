@@ -1,293 +1,447 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { 
-  ArrowRightIcon, SparklesIcon, CodeBracketIcon, DevicePhoneMobileIcon, 
-  CloudIcon, CpuChipIcon, ShieldCheckIcon, AdjustmentsHorizontalIcon, 
-  ArrowUpRightIcon, RocketLaunchIcon, UserGroupIcon, ChartBarSquareIcon, 
-  ShieldExclamationIcon, LightBulbIcon, ChatBubbleBottomCenterTextIcon 
+import React, { JSX, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  SparklesIcon,
+  ArrowRightIcon,
+  CodeBracketIcon,
+  DevicePhoneMobileIcon,
+  CloudIcon,
+  CpuChipIcon,
+  ShieldCheckIcon,
+  AdjustmentsHorizontalIcon,
+  RocketLaunchIcon,
+  LightBulbIcon,
+  ChatBubbleBottomCenterTextIcon,
 } from "@heroicons/react/24/outline";
 
-// ------------------------------
-// Type Definitions
-// ------------------------------
-type HeroIcon = React.ElementType;
+/**
+ * Cover.tsx
+ * - Splash shows for 4s, then hero uses the same video (not sticky)
+ * - tickerRef null-safe (no TS18047)
+ * - Added: features, testimonials, CTA, contact, footer
+ *
+ * Requires: framer-motion
+ * npm i framer-motion
+ */
 
-interface ServiceCardProps {
-  icon: HeroIcon;
-  title: string;
-  description: string;
-  animationDelay: number;
-}
+const services = [
+  { icon: CodeBracketIcon, title: "Web Development", desc: "React/Next.js, performant and accessible." },
+  { icon: DevicePhoneMobileIcon, title: "Mobile Apps", desc: "React Native / Flutter cross-platform apps." },
+  { icon: CloudIcon, title: "Cloud & DevOps", desc: "CI/CD, infra as code and monitoring." },
+  { icon: CpuChipIcon, title: "AI & Automation", desc: "ML models, automation and pipelines." },
+  { icon: ShieldCheckIcon, title: "Security", desc: "Secure-by-design audits & reviews." },
+  { icon: AdjustmentsHorizontalIcon, title: "UI/UX", desc: "Design systems and delightful experiences." },
+];
 
-interface ProcessStepProps {
-  number: number;
-  title: string;
-  description: string;
-  icon: HeroIcon;
-  delay: number;
-}
+const testimonials = [
+  { name: "Asha R.", text: "Delivered on time with great communication." },
+  { name: "Rahul K.", text: "Transformed our product — conversion up 42%." },
+  { name: "Priya S.", text: "Professional and deeply technical." },
+];
 
-interface StatProps {
-  value: string;
-  label: string;
-}
+const clients = ["Company A", "Company B", "Company C", "Company D", "Company E"];
 
-interface ClientProps {
-  name: string;
-  offer: string;
-}
-
-// ------------------------------
-// Helper Components
-// ------------------------------
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, animationDelay }) => (
-  <div 
-    className="relative p-8 bg-white rounded-2xl shadow-sm hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 overflow-hidden group border border-gray-100/50"
-    style={{ animationDelay: `${animationDelay}ms` }}
-  >
-    <div 
-      className="absolute inset-0 bg-gradient-to-br from-orange-50 to-orange-100 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      style={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 80%, 0% 100%)' }}
-    />
-    <div className="relative z-10 p-4 mb-4 inline-flex items-center justify-center rounded-xl bg-orange-50/70 group-hover:bg-orange-100 transition-colors duration-300">
-      <Icon className="w-6 h-6 text-orange-600" />
-    </div>
-    <h3 className="relative z-10 text-xl font-bold text-gray-900 mb-2">{title}</h3>
-    <p className="relative z-10 text-gray-600 mb-4 text-sm">{description}</p>
-    <a href="#" className="relative z-10 flex items-center text-orange-600 font-semibold text-sm hover:text-orange-700 transition duration-300">
-      Learn More
-      <ArrowUpRightIcon className="w-4 h-4 ml-1" />
-    </a>
-  </div>
-);
-
-const ProcessStep: React.FC<ProcessStepProps> = ({ number, title, description, icon: Icon, delay }) => (
-  <div 
-    className="relative p-8 bg-white rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition duration-500 hover:-translate-y-1"
-    style={{ animationDelay: `${delay}ms` }}
-  >
-    <div className="absolute -top-4 left-4 w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">
-      {number}
-    </div>
-    <div className="flex items-start mb-6 pt-4">
-      <div className="p-3 inline-flex items-center justify-center rounded-xl bg-orange-50/70 border border-orange-200">
-        <Icon className="w-6 h-6 text-orange-600" />
-      </div>
-      <div className="w-3 h-3 bg-orange-400 rounded-full ml-auto mt-2" />
-    </div>
-    <h3 className="text-xl font-extrabold text-gray-900 mb-2">
-      {title}
-      <span className="inline-block w-2 h-2 bg-orange-500 rounded-full ml-2" />
-    </h3>
-    <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
-  </div>
-);
-
-// ------------------------------
-// Main Component
-// ------------------------------
-const Cover: React.FC = () => {
+export default function Cover(): JSX.Element {
   const [showSplash, setShowSplash] = useState(true);
-  const tickerRef = useRef<HTMLDivElement>(null);
+  const tickerRef = useRef<HTMLDivElement | null>(null);
+  const [prefersDark, setPrefersDark] = useState(false);
+const [current, setCurrent] = useState(0);
 
-  // Sample data
-  const services: ServiceCardProps[] = [
-    { icon: CodeBracketIcon, title: "Web Development", description: "Custom web applications built with modern frameworks like React, Next.js, and Node.js.", animationDelay: 0 },
-    { icon: DevicePhoneMobileIcon, title: "Mobile Apps", description: "Native and cross-platform mobile applications for iOS and Android using React Native and Flutter.", animationDelay: 100 },
-    { icon: CloudIcon, title: "Cloud Solutions", description: "Cloud architecture, migration, and DevOps services on AWS, Azure, and Google Cloud Platform.", animationDelay: 200 },
-    { icon: CpuChipIcon, title: "AI & Machine Learning", description: "Intelligent solutions powered by ML, NLP, and computer vision.", animationDelay: 300 },
-    { icon: ShieldCheckIcon, title: "Cybersecurity", description: "Comprehensive security audits and secure coding practices.", animationDelay: 400 },
-    { icon: AdjustmentsHorizontalIcon, title: "UI/UX Design", description: "User-centered design for intuitive, engaging digital experiences.", animationDelay: 500 },
-  ];
-
-  const processSteps: ProcessStepProps[] = [
-    { number: 1, title: "Discovery", description: "We dive deep into understanding your business, goals, and challenges.", icon: ChatBubbleBottomCenterTextIcon, delay: 0 },
-    { number: 2, title: "Strategy", description: "Crafting a tailored roadmap with technical architecture, timelines, and milestones.", icon: LightBulbIcon, delay: 150 },
-    { number: 3, title: "Development", description: "Agile development with regular demos and iterative feedback.", icon: CodeBracketIcon, delay: 300 },
-    { number: 4, title: "Launch & Scale", description: "Seamless deployment with ongoing support and scaling strategies.", icon: RocketLaunchIcon, delay: 450 },
-  ];
-
-  const stats: StatProps[] = [
-    { value: "200+", label: "Projects Delivered" },
-    { value: "50+", label: "Happy Clients" },
-    { value: "10+", label: "Years Experience" },
-    { value: "99%", label: "Client Satisfaction" },
-  ];
-
-  const clients: ClientProps[] = [
-    { name: "Company A", offer: "50% Off" },
-    { name: "Company B", offer: "30% Off" },
-    { name: "Company C", offer: "70% Off" },
-    { name: "Company D", offer: "20% Off" },
-    { name: "Company E", offer: "60% Off" },
-  ];
-
-  // Splash timer
+  const goTo = (index: number) => setCurrent(index);
+  // Splash 4s
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 3000);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setShowSplash(false), 4000);
+    return () => clearTimeout(t);
   }, []);
 
-  // Auto scroll ticker
+  // detect theme (just for demo; adapt to your theme provider)
+  useEffect(() => {
+    const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setPrefersDark(dark);
+  }, []);
+
+  // AUTO SCROLL TICKER (null-safe & cleanup)
   useEffect(() => {
     const ticker = tickerRef.current;
     if (!ticker) return;
 
-    let scrollAmount = 0;
-    const speed = 1; // px per frame
-    let reqId: number;
+    let x = 0;
+    const speed = 0.8; // px per frame
+    let rafId = 0;
 
-    const scrollTicker = () => {
-      scrollAmount += speed;
-      if (scrollAmount >= ticker.scrollWidth / 2) scrollAmount = 0;
-      ticker.scrollLeft = scrollAmount;
-      reqId = requestAnimationFrame(scrollTicker);
+    const tick = () => {
+      x += speed;
+      // protect against zero width
+      const width = ticker.scrollWidth || 0;
+      if (width > 0 && x >= width / 2) x = 0;
+      // assign scroll
+      ticker.scrollLeft = x;
+      rafId = requestAnimationFrame(tick);
     };
-    reqId = requestAnimationFrame(scrollTicker);
 
-    return () => cancelAnimationFrame(reqId);
-  }, []);
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [tickerRef.current]);
 
   return (
-    <div className="min-h-screen relative font-sans">
-      {/* ---------------- Navbar ---------------- */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-black/50 backdrop-blur-md py-4 px-6 flex justify-between items-center text-white">
-        <span className="text-2xl font-bold">MyBrand</span>
-        <ul className="flex gap-6 font-medium">
-          <li><a href="#services" className="hover:text-orange-500">Services</a></li>
-          <li><a href="#process" className="hover:text-orange-500">Process</a></li>
-          <li><a href="#stats" className="hover:text-orange-500">Stats</a></li>
-          <li><a href="#clients" className="hover:text-orange-500">Clients</a></li>
-        </ul>
-      </nav>
-
-      {/* ---------------- Splash Video ---------------- */}
+    <div className="min-h-screen w-full relative font-sans bg-white dark:bg-black text-black dark:text-white transition-colors">
+      {/* SPLASH (4s) */}
       {showSplash && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-          <video 
-            src="/ve.mp4" 
-            autoPlay 
-            muted 
-            playsInline 
-            className="w-full h-full object-cover"
-          />
+          <video src="/ve.mp4" autoPlay muted playsInline className="w-full h-full object-cover" />
         </div>
       )}
 
-      {/* ---------------- HEADER / HERO ---------------- */}
-      <header className={`relative z-10 ${!showSplash ? "" : "hidden"}`}>
-        <video 
-          src="/ve.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="fixed inset-0 w-full h-full object-cover z-0"
-        />
-        <div className="relative z-10 min-h-[75vh] flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-20 text-white">
-          {/* Left Column */}
-          <div className="flex-1 text-left">
-            <span className="inline-flex items-center px-4 py-2 text-sm font-semibold bg-orange-600/20 rounded-full shadow-sm animate-pulse-slow mb-4">
-              <SparklesIcon className="w-5 h-5 mr-2 text-orange-500" />
-              Ready to Transform?
-            </span>
+      {/* HERO - video ONLY inside cover */}
+      {!showSplash && (
+        <header className="relative w-full h-[75vh] overflow-hidden">
+          <video
+            src="/ve.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
+          />
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-              Let's Build Something <span className="text-orange-500">Extraordinary</span> Together
-            </h1>
+          <div className="relative z-10 container mx-auto h-full flex flex-col md:flex-row items-center justify-center px-6 md:px-12">
+            {/* Left */}
+            <div className="flex-1 max-w-2xl">
+              <motion.span
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45 }}
+                className="inline-flex items-center px-4 py-2 rounded-full font-medium text-[#F54E02] bg-[#F54E02]/10"
+              >
+                <SparklesIcon className="w-4 h-4 mr-2" />
+                Ready to transform?
+              </motion.span>
 
-            <p className="text-lg md:text-xl mb-10 max-w-xl">
-              Whether you're a startup or enterprise, we turn your vision into reality with innovative solutions.
-            </p>
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.12 }}
+                className="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight"
+              >
+                Let's Build Something <span className="text-[#F54E02]">Extraordinary</span>
+              </motion.h1>
 
-            <div className="flex flex-wrap gap-4 mb-12">
-              <button className="flex items-center px-8 py-4 text-white font-bold bg-orange-500 rounded-lg shadow-xl hover:bg-orange-600 transition transform hover:scale-105 active:scale-95">
-                Start Your Project <ArrowRightIcon className="w-5 h-5 ml-2" />
-              </button>
-              <button className="px-8 py-4 text-orange-500 font-bold bg-white/30 border border-white/40 rounded-lg shadow-lg hover:bg-white/50 transition transform hover:scale-105 active:scale-95">
-                View Our Work
-              </button>
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.22 }} className="mt-4 text-lg text-gray-100/90 max-w-xl">
+                Product design, engineering and cloud ops — end-to-end delivery that ships product-market fit.
+              </motion.p>
+
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-8 flex gap-4">
+                <button className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[#F54E02] text-white font-semibold shadow hover:scale-[1.03] transition transform">
+                  Start Project <ArrowRightIcon className="w-4 h-4" />
+                </button>
+                <button className="px-6 py-3 rounded-lg bg-white/20 border border-white/30 text-white font-semibold hover:bg-white/30 transition">
+                  View Work
+                </button>
+              </motion.div>
             </div>
-          </div>
 
-          {/* Right Column */}
-          <div className="flex-1 mt-10 md:mt-0 flex justify-center items-center">
-            <div className="w-64 h-64 md:w-80 md:h-80 bg-orange-100/20 rounded-2xl flex items-center justify-center shadow-xl">
-              <span className="text-6xl font-bold text-orange-500">S</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* ---------------- MAIN CONTENT (NO VIDEO) ---------------- */}
-      <main className="relative z-10 mt-[75vh]">
-        {/* ---------------- CLIENT TICKER ---------------- */}
-        <section id="clients" className="py-6 bg-gray-100">
-          <div className="overflow-hidden">
-            <div ref={tickerRef} className="flex whitespace-nowrap gap-12 px-4">
-              {clients.concat(clients).map((client, index) => (
-                <div key={index} className="inline-block bg-white px-6 py-4 rounded-xl shadow-md">
-                  <span className="font-bold text-gray-800">{client.name}</span>
-                  <span className="ml-2 text-orange-500 font-semibold">{client.offer}</span>
+            {/* Right - emblem/card */}
+            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.35 }} className="flex-1 mt-10 md:mt-0 flex items-center justify-center">
+              <div className="w-64 h-64 md:w-80 md:h-80 bg-white/5 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-2xl border border-white/10">
+                <div className="w-40 h-40 rounded-xl bg-gradient-to-br from-[#F54E02]/20 to-[#F54E02]/10 flex items-center justify-center">
+                  <span className="text-6xl font-bold text-[#F54E02]">S</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Services Section */}
-        <section id="services" className="py-24 px-4 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <p className="text-sm font-semibold text-orange-500 uppercase mb-2">What We Do</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-16 leading-tight">
-              Services That Drive <span className="text-orange-500">Innovation</span>
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service, index) => (
-                <ServiceCard key={index} {...service} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Process Section */}
-        <section id="process" className="py-24 px-4 bg-gray-50">
-          <div className="max-w-7xl mx-auto text-center">
-            <p className="text-sm font-semibold text-orange-500 uppercase mb-2">Our Process</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-16 leading-tight">
-              From Idea to <span className="text-orange-500">Impact</span>
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {processSteps.map((step, index) => (
-                <ProcessStep key={index} {...step} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section id="stats" className="py-24 px-4 bg-white">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {stats.map((stat, index) => (
-              <div key={index} className="p-6 rounded-xl bg-orange-50 shadow hover:shadow-lg transition transform hover:-translate-y-1">
-                <p className="text-5xl font-extrabold text-orange-500 mb-2">{stat.value}</p>
-                <p className="text-gray-700 font-medium">{stat.label}</p>
               </div>
+            </motion.div>
+          </div>
+        </header>
+      )}
+
+      {/* CLIENT TICKER */}
+      <section className="py-6 bg-transparent">
+  <div className="container mx-auto px-6 overflow-hidden relative">
+    
+    {/* Infinite Scrolling Track */}
+    <div className="flex items-center gap-10 animate-scroll whitespace-nowrap">
+      {[...clients, ...clients, ...clients].map((c, i) => (
+        <div 
+          key={i} 
+          className="text-black dark:text-white font-semibold text-lg opacity-80 hover:opacity-100 transition"
+        >
+          {c}
+        </div>
+      ))}
+    </div>
+
+  </div>
+
+  {/* Animation Styles */}
+  <style jsx>{`
+    .animate-scroll {
+      display: inline-flex;
+      animation: scroll 18s linear infinite;
+    }
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+  `}</style>
+</section>
+
+
+      {/* SERVICES */}
+      <section id="services" className="py-20 container mx-auto px-6">
+  
+  {/* Centered Title Section */}
+  <div className="mb-14 text-center">
+    <h3 className="text-lg font-semibold text-[#F54E02]">What We Do</h3>
+    <h2 className="text-3xl md:text-4xl font-extrabold mt-3">
+      Services That Drive <span className="text-[#F54E02]">Innovation</span>
+    </h2>
+    <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+      We build robust end-to-end digital products — design, engineering, and operations.
+    </p>
+  </div>
+
+  {/* Services Grid */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+    {services.map((s, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: i * 0.15 }}
+        viewport={{ once: true }}
+        whileHover={{ y: -8, scale: 1.03 }}
+        className="
+          group relative p-8 rounded-2xl
+          bg-white/70 dark:bg-gray-900/60
+          backdrop-blur-xl border border-gray-100 dark:border-gray-800
+          shadow-lg hover:shadow-2xl
+          transition-all duration-300
+          overflow-hidden
+        "
+      >
+        {/* Gradient Pattern Hover */}
+        <div className="
+          absolute inset-0 rounded-2xl
+          bg-gradient-to-br from-[#F54E02]/10 to-[#ff8d4c]/20 
+          opacity-0 group-hover:opacity-100 
+          transition-opacity duration-300
+        " />
+
+        {/* Sheen Light */}
+        <div className="
+          absolute -top-16 left-0 w-full h-24 
+          bg-gradient-to-b from-white/50 to-transparent
+          dark:from-white/10
+          opacity-0 group-hover:opacity-100
+          blur-2xl transition duration-300
+        " />
+
+        {/* Glow Dot */}
+        <div className="
+          absolute -bottom-12 -right-10 w-28 h-28 
+          bg-[#F54E02]/20 rounded-full blur-2xl 
+          transition group-hover:animate-pulse
+        " />
+
+        {/* Icon */}
+        <div className="
+          mb-5 p-4 rounded-xl bg-[#F54E02]/10 
+          text-[#F54E02] w-fit
+          group-hover:scale-110 transition
+        ">
+          <s.icon className="w-10 h-10" />
+        </div>
+
+        {/* Title */}
+        <h4 className="text-xl font-bold mb-2 relative z-10">
+          {s.title}
+        </h4>
+
+        {/* Description */}
+        <p className="text-gray-600 dark:text-gray-300 relative z-10">
+          {s.desc}
+        </p>
+
+      </motion.div>
+    ))}
+  </div>
+
+</section>
+
+
+      {/* FEATURES / PROCESS (compact) */}
+      <section className="py-16 bg-gray-50 dark:bg-neutral-900">
+        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h3 className="text-sm font-semibold text-[#F54E02]">Our Process</h3>
+            <h2 className="text-3xl font-extrabold mt-3">From Idea to <span className="text-[#F54E02]">Impact</span></h2>
+            <ul className="mt-6 space-y-4 text-gray-700 dark:text-gray-300">
+              <li className="flex gap-3 items-start">
+                <div className="w-10 h-10 bg-[#F54E02] text-white rounded-lg flex items-center justify-center font-bold">1</div>
+                <div>
+                  <div className="font-bold">Discovery</div>
+                  <div className="text-sm">Deeply understand users, outcomes and constraints.</div>
+                </div>
+              </li>
+              <li className="flex gap-3 items-start">
+                <div className="w-10 h-10 bg-[#F54E02] text-white rounded-lg flex items-center justify-center font-bold">2</div>
+                <div>
+                  <div className="font-bold">Build & Iterate</div>
+                  <div className="text-sm">Ship fast, test assumptions, iterate quickly.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            {["Speed & Quality", "Scalable Architecture", "Design Systems"].map((t, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} className="p-6 bg-white dark:bg-gray-800 border rounded-xl shadow">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-[#F54E02]/20 flex items-center justify-center text-[#F54E02] font-bold">{i + 1}</div>
+                  <div>
+                    <h4 className="font-bold">{t}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">Tangible outcomes backed by data and engineering discipline.</p>
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
-      <style jsx>{`
-        .animate-pulse-slow {
-          animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-      `}</style>
+      {/* TESTIMONIALS */}
+   <section className="py-20 container mx-auto px-6">
+
+  {/* Center Titles */}
+  <div className="text-center space-y-2 mb-12">
+    <h3 className="text-lg font-semibold text-[#F54E02]">Testimonials</h3>
+    <h2 className="text-3xl md:text-4xl font-extrabold">What clients say</h2>
+  </div>
+
+  {/* Slider Container */}
+  <div className="relative overflow-hidden">
+    <div
+      className="flex transition-transform duration-500 gap-6 md:gap-8"
+      style={{ transform: `translateX(-${current * (100)}%)` }}
+    >
+      {testimonials.map((t, i) => (
+        <motion.blockquote
+          key={i}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: i * 0.15 }}
+          className="
+            group min-w-full md:min-w-[32%] 
+            p-8 md:p-6 rounded-2xl 
+            bg-white/70 dark:bg-gray-900/70
+            backdrop-blur-xl shadow-lg border border-white/10
+            hover:shadow-2xl hover:scale-[1.03]
+            transition-all duration-300 overflow-hidden
+          "
+        >
+          {/* Hover Gradient */}
+          <div className="
+            absolute inset-0 opacity-0 group-hover:opacity-100 
+            bg-gradient-to-br from-[#F54E02]/10 to-[#ff8d4c]/20
+            transition-opacity duration-300
+          " />
+
+          {/* Top Sheen */}
+          <div className="
+            absolute -top-12 left-0 w-full h-24 
+            bg-gradient-to-b from-white/40 to-transparent 
+            dark:from-white/10 
+            opacity-0 group-hover:opacity-100 
+            blur-2xl transition duration-300
+          " />
+
+          <p className="text-gray-800 dark:text-gray-200 relative z-10 leading-relaxed text-[15px] md:text-base">
+            “{t.text}”
+          </p>
+
+          <cite className="block mt-6 text-sm font-semibold text-gray-600 dark:text-gray-400 relative z-10">
+            — {t.name}
+          </cite>
+
+          {/* Glow Circle */}
+          <div className="
+            absolute -bottom-10 -right-8 w-28 h-28 
+            bg-[#F54E02]/20 rounded-full blur-2xl 
+            group-hover:animate-pulse
+          "></div>
+        </motion.blockquote>
+      ))}
+    </div>
+  </div>
+
+  {/* Navigation Dots */}
+  <div className="flex justify-center mt-10 gap-4">
+    {testimonials.map((_, i) => (
+      <button
+        key={i}
+        onClick={() => goTo(i)}
+        className={`
+          w-3.5 h-3.5 rounded-full transition-all
+          ${current === i 
+            ? "bg-[#F54E02] scale-125 shadow-md" 
+            : "bg-gray-400 dark:bg-gray-600 opacity-70"}
+        `}
+      />
+    ))}
+  </div>
+
+</section>
+
+
+
+<section className="relative py-24 overflow-hidden bg-gradient-to-b from-white to-[#fff7f0] dark:from-black dark:to-[#1a0b00] text-center">
+
+  {/* Floating gradient blobs */}
+  <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-40 h-40 bg-[#F54E02]/20 blur-3xl rounded-full animate-pulse"></div>
+  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-56 h-56 bg-orange-500/10 blur-3xl rounded-full animate-[bounce_6s_infinite]"></div>
+
+  <div className="container mx-auto px-6 flex flex-col items-center justify-center gap-6">
+
+    {/* Heading */}
+    <h3 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-[#F54E02] to-[#ff9750] bg-clip-text text-transparent animate-fadeIn">
+      Ready to launch?
+    </h3>
+
+    {/* Subtitle */}
+    <p className="text-gray-700 dark:text-gray-300 max-w-xl animate-slideUp">
+      Tell us about your idea and we'll help you ship it.
+    </p>
+
+    {/* Button */}
+    <a
+      href="#contact"
+      className="
+        group relative px-10 py-4 text-white font-semibold rounded-xl 
+        bg-gradient-to-r from-[#F54E02] to-[#ff7a30] 
+        shadow-lg shadow-orange-500/30
+        transition-all duration-300
+        hover:shadow-xl hover:shadow-orange-500/50
+        hover:scale-[1.08]
+      "
+    >
+      <span className="relative z-10">Get Started</span>
+
+      {/* Button glow ring */}
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#F54E02] to-transparent opacity-0 group-hover:opacity-100 blur-xl transition"></div>
+    </a>
+
+  </div>
+</section>
+
+
+      
+
+      
     </div>
   );
-};
-
-export default Cover;
+}
