@@ -1,12 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Moon, Sun, Menu } from "lucide-react"; // Added Menu for potential mobile view, though not implemented here
+import { Moon, Sun } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [theme, setTheme] = useState("light");
+  const router = useRouter();
 
-  // Load saved theme
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     if (saved) {
@@ -15,7 +16,6 @@ export default function Navbar() {
     }
   }, []);
 
-  // Toggle Theme
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
@@ -23,65 +23,65 @@ export default function Navbar() {
     localStorage.setItem("theme", newTheme);
   };
 
-  const navItems = ["Home", "About Us", "Services", "Team", "Contact"];
+  // Nav items with target routes
+  const navItems = [
+    { label: "Home", route: "/" },
+    { label: "About Us", route: "/about" },
+    { label: "Services", route: "/service" },
+    { label: "Team", route: "/team" },
+    { label: "Contact", route: "/contact" },
+  ];
+
+  const handleNavigation = (route: string) => {
+    router.push(route);
+  };
 
   return (
     <motion.nav
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      // Use bg-white for light mode and ensure text colors adapt
-      className="w-full flex items-center justify-between px-8 py-4 bg-white dark:bg-black shadow-md sticky top-0 z-10" 
+      className="w-full flex items-center justify-between px-8 py-4 bg-white dark:bg-black shadow-md sticky top-0 z-10"
     >
-      {/* Logo: Matches 'S Shraddha' structure from image */}
-    <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-2 cursor-pointer">
-  {/* Logo Icon (Replace '/logo_s.png' with your actual path if different) */}
-  <img src="/logo1.png" alt="Shraddha Logo S" className="w-40 h-11" /> 
-  
-  {/* Company Name (Shraddha) */}
-</motion.div>
+      {/* Logo */}
+      <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-2 cursor-pointer">
+        <img src="/logo1.png" alt="Shraddha Logo S" className="w-40 h-11" />
+      </motion.div>
 
-      {/* Nav Links: Updated to match image */}
+      {/* Nav Links */}
       <ul className="hidden md:flex gap-8 text-lg font-medium">
         {navItems.map((item) => (
           <motion.li
-            key={item}
+            key={item.label}
             whileHover={{ scale: 1.1, color: "#f97316" }}
-            // Apply text-orange-500 to 'Home' to match the active state in the image
             className={`cursor-pointer ${
-              item === "Home" 
-                ? "text-orange-500 dark:text-orange-500" 
+              item.label === "Home"
+                ? "text-orange-500 dark:text-orange-500"
                 : "text-gray-900 dark:text-white"
             } hover:text-orange-500 transition-colors duration-200`}
+            onClick={() => handleNavigation(item.route)}
           >
-            {item}
+            {item.label}
           </motion.li>
         ))}
       </ul>
 
-      {/* Theme Toggle & Get Started Button Group */}
+      {/* Theme Toggle & Get Started */}
       <div className="flex items-center gap-4">
-        
-        {/* Theme Toggle Button - Positioned to the left of "Get Started" */}
         <motion.button
           whileHover={{ scale: 1.15 }}
           whileTap={{ scale: 0.9 }}
           onClick={toggleTheme}
-          // The toggle icon in the image is subtle, using a less prominent style here
           className="p-1 rounded-full text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition-all duration-300"
         >
-          {theme === "light" ? (
-            <Moon className="w-5 h-5" /> // Using Moon icon for 'light' theme as seen in the image's top right corner
-          ) : (
-            <Sun className="w-5 h-5" />
-          )}
+          {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
         </motion.button>
 
-        {/* Get Started Button - Matches the orange button in the image */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="px-4 py-2 text-white bg-orange-500 rounded-lg font-semibold shadow-md hover:bg-orange-600 transition-colors duration-300"
+          onClick={() => router.push("/contact")}
         >
           Get Started
         </motion.button>

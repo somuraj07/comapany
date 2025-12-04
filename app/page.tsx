@@ -1,9 +1,10 @@
-import Image from "next/image";
+import Cover from "@/components/Cover";
+
 
 export default function Home() {
   return (
      <div>
-      hii there 
+      <Cover/>
      </div>
   );
 }
