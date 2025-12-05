@@ -105,53 +105,97 @@ export default function LandingPage() {
     </motion.div>
   ))}
 </motion.section>
+{/* ================= VISION ================= */}
+<section className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center mt-20">
+  <motion.div
+    initial={{ opacity: 0, x: -40 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.7 }}
+  >
+    <h3 className="text-orange-500 font-semibold tracking-wide">Our Vision</h3>
+    <h2 className="text-3xl sm:text-4xl font-extrabold mt-2 leading-tight">
+      To be recognized as <span className="text-orange-500">India's leading platform</span> for technical education
+    </h2>
 
+    <motion.p
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ delay: 0.1 }}
+      className="text-gray-600 mt-5 leading-relaxed"
+    >
+      We aim to produce skilled professionals who drive innovation and excellence in the technology sector globally.
+    </motion.p>
 
-      {/* ================= MISSION ================= */}
-      <section className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center mt-10">
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          className="group relative rounded-3xl overflow-hidden shadow-xl transition hover:scale-[1.03]"
-        >
-          <div className="
-            absolute inset-0 opacity-0 group-hover:opacity-40
-            bg-gradient-to-br from-orange-200/40 via-orange-100/20 to-transparent
-            transition-opacity duration-300
-          "></div>
-          <Image src="/teamwork.jpg" width={650} height={450} alt="Team working" className="w-full h-auto object-cover" />
-        </motion.div>
+    <motion.p
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
+      className="text-gray-600 mt-4 leading-relaxed"
+    >
+      Becoming the preferred training partner for both students and corporations, expanding our reach across India, and building a community of lifelong learners and technology innovators.
+    </motion.p>
+  </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-        >
-          <h3 className="text-orange-500 font-semibold tracking-wide">Our Mission</h3>
-          <h2 className="text-3xl sm:text-4xl font-extrabold mt-2 leading-tight">
-            Empowering Businesses Through <span className="text-orange-500">Technology</span>
-          </h2>
+  <motion.div
+    initial={{ opacity: 0, x: 40 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.7 }}
+    className="group relative rounded-3xl overflow-hidden shadow-xl transition hover:scale-[1.03]"
+  >
+    <div className="
+      absolute inset-0 opacity-0 group-hover:opacity-40
+      bg-gradient-to-br from-orange-200/40 via-orange-100/20 to-transparent
+      transition-opacity duration-300
+    "></div>
+    <Image src="/vis.jpg" width={650} height={450} alt="Vision Image" className="w-full h-auto object-cover" />
+  </motion.div>
+</section>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-600 mt-5 leading-relaxed"
-          >
-            Our mission is to democratize access to world-class technology solutions. Every business deserves the power to thrive in the digital world.
-          </motion.p>
+{/* ================= MISSION ================= */}
+<section className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center mt-10">
+  <motion.div
+    initial={{ opacity: 0, x: -40 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.7 }}
+    className="group relative rounded-3xl overflow-hidden shadow-xl transition hover:scale-[1.03]"
+  >
+    <div className="
+      absolute inset-0 opacity-0 group-hover:opacity-40
+      bg-gradient-to-br from-orange-200/40 via-orange-100/20 to-transparent
+      transition-opacity duration-300
+    "></div>
+    <Image src="/team.jpg" width={650} height={450} alt="Team working" className="w-full h-auto object-cover" />
+  </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-600 mt-4 leading-relaxed"
-          >
-            From SaaS products to enterprise systems, we transform ideas into robust digital solutions that accelerate growth, efficiency, and innovation.
-          </motion.p>
-        </motion.div>
-      </section>
+  <motion.div
+    initial={{ opacity: 0, x: 40 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.7 }}
+  >
+    <h3 className="text-orange-500 font-semibold tracking-wide">Our Mission</h3>
+    <h2 className="text-3xl sm:text-4xl font-extrabold mt-2 leading-tight">
+      To democratize <span className="text-orange-500">quality technical education</span>
+    </h2>
+
+    <motion.p
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ delay: 0.1 }}
+      className="text-gray-600 mt-5 leading-relaxed"
+    >
+      Making education accessible, affordable, and directly relevant to industry needs. We aim to transform students into industry-ready professionals through practical skill development and personalized career guidance.
+    </motion.p>
+
+    <motion.p
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
+      className="text-gray-600 mt-4 leading-relaxed"
+    >
+      Providing cutting-edge technical curriculum aligned with industry demands, creating a supportive learning environment that encourages growth and innovation, and connecting talented individuals with employment opportunities in leading companies.
+    </motion.p>
+  </motion.div>
+</section>
 
       {/* ================= VALUES ================= */}
       <section className="mt-28 text-center px-6 pb-24">

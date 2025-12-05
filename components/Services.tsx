@@ -7,7 +7,7 @@ export default function ServicesPage() {
   const services = [
     {
       number: "01",
-      title: "Software Solutions",
+      title: "Software Development",
       desc: "Tailor-made software built to solve complex business problems.",
       icon: <Code size={40} className="text-orange-500" />,
       points: ["Custom software", "ERP solutions", "Automation tools", "API Integrations", "Cloud platforms"],

@@ -4,15 +4,7 @@ import { MapPin, Phone, Mail, Send } from "lucide-react";
 
 export default function ContactPage() {
   const contactInfo = [
-    {
-      icon: <MapPin className="text-orange-500" />,
-      title: "Visit Us - Marathalli",
-      text: "Marathalli, Bengaluru, Karnataka, India",
-      mapSrc:
-        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5946!2d77.6752!3d12.9591!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670f6a1abef:0xdeb6b45!2sMarathalli,%20Bengaluru!5e0!3m2!1sen!2sin!4v1700000000000",
-      width: "100%",
-      height: "200px",
-    },
+    
     {
       icon: <MapPin className="text-orange-500" />,
       title: "Visit Us - JNTUA",

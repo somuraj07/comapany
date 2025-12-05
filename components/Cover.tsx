@@ -12,7 +12,7 @@ import {
   ShieldCheckIcon,
   AdjustmentsHorizontalIcon,
 } from "@heroicons/react/24/outline";
-
+import Link from "next/link";
 import {
   ArrowUpRightIcon,
   ChatBubbleBottomCenterTextIcon,
@@ -24,6 +24,12 @@ import {
   PlayIcon,
 } from "@heroicons/react/24/solid";
 import ProcessSection from "./Process";
+import LetsPage from "./letscontact";
+import ServicesSection from "./LandServices";
+import Services from "./LandServices";
+import About from "@/app/about/page";
+import AboutPage from "./AboutLand";
+import ClientTestimonials from "./testesmonial";
 
 type HeroIcon = React.ElementType;
 
@@ -53,35 +59,35 @@ interface StatProps {
 }
 
 const servicesData: ServiceCardProps[] = [
-  { 
-    icon: CpuChipIcon, 
-    title: "Software Solutions", 
-    description: "Custom software solutions tailored to your business needs, ensuring scalability, efficiency, and reliability.", 
-    animationDelay: 0 
+  {
+    icon: CpuChipIcon,
+    title: "Software Solutions",
+    description: "Custom software solutions tailored to your business needs, ensuring scalability, efficiency, and reliability.",
+    animationDelay: 0
   },
-  { 
-    icon: DevicePhoneMobileIcon, 
-    title: "App Development", 
-    description: "Native and cross-platform mobile applications for iOS and Android using React Native and Flutter.", 
-    animationDelay: 100 
+  {
+    icon: DevicePhoneMobileIcon,
+    title: "App Development",
+    description: "Native and cross-platform mobile applications for iOS and Android using React Native and Flutter.",
+    animationDelay: 100
   },
-  { 
-    icon: CodeBracketIcon, 
-    title: "Web Development", 
-    description: "Modern, responsive web applications using React, Next.js, and Node.js that are fast, secure, and scalable.", 
-    animationDelay: 200 
+  {
+    icon: CodeBracketIcon,
+    title: "Web Development",
+    description: "Modern, responsive web applications using React, Next.js, and Node.js that are fast, secure, and scalable.",
+    animationDelay: 200
   },
-  { 
-    icon: ChartBarSquareIcon, 
-    title: "Digital Marketing", 
-    description: "Comprehensive digital marketing strategies including SEO, SEM, social media, and content marketing to grow your brand.", 
-    animationDelay: 300 
+  {
+    icon: ChartBarSquareIcon,
+    title: "Digital Marketing",
+    description: "Comprehensive digital marketing strategies including SEO, SEM, social media, and content marketing to grow your brand.",
+    animationDelay: 300
   },
-  { 
-    icon: AdjustmentsHorizontalIcon, 
-    title: "UI/UX Design", 
-    description: "User-centered designs that are visually appealing, intuitive, and enhance user engagement.", 
-    animationDelay: 400 
+  {
+    icon: AdjustmentsHorizontalIcon,
+    title: "UI/UX Design",
+    description: "User-centered designs that are visually appealing, intuitive, and enhance user engagement.",
+    animationDelay: 400
   },
 ];
 
@@ -156,9 +162,12 @@ export default function Cover() {
               <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">Let's Build Something <span className="text-[#F54E02]">Extraordinary</span></motion.h1>
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.22 }} className="mt-4 text-lg text-gray-800/90 max-w-xl">Product design, engineering and cloud ops — end-to-end delivery that ships product-market fit.</motion.p>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-8 flex gap-4">
-                <button className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[#F54E02] text-white font-semibold shadow hover:scale-[1.03] transition transform">Start Project <ArrowRightIcon className="w-4 h-4" /></button>
-                <button className="px-6 py-3 rounded-lg bg-white/20 border border-white/30 text-gray-900 font-semibold hover:bg-gray-50 transition">View Work</button>
-              </motion.div>
+<Link href="/contact"> {/* Replace /contact with your target page */}
+  <button className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[#F54E02] text-white font-semibold shadow hover:scale-[1.03] transition transform">
+    Start Project
+    <ArrowRightIcon className="w-4 h-4" />
+  </button>
+</Link>              </motion.div>
             </div>
 
             {/* Hero Image */}
@@ -169,20 +178,22 @@ export default function Cover() {
               className="flex-1 mt-10 md:mt-0 flex items-center justify-center"
             >
               {/* PNG Image */}
-              <div className="w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
+              <div className="w-full h-[60vh] md:h-[70vh] flex items-center justify-center">
                 <img
-                  src="/4.png"
+                  src="/hero1.png"
                   alt="Hero"
                   className="w-full h-full object-contain"
                 />
               </div>
             </motion.div>
+
+
           </div>
         </header>
       )}
 
       {/* CLIENT TICKER */}
-      <section className="py-6 bg-transparent">
+      <section className="py-10 bg-transparent">
         <div className="container mx-auto px-6 overflow-hidden relative">
           <div className="flex items-center gap-10 animate-scroll whitespace-nowrap" ref={tickerRef}>
             {[...clients, ...clients, ...clients].map((c, i) => <div key={i} className="text-gray-900 font-semibold text-lg opacity-80 hover:opacity-100 transition">{c}</div>)}
@@ -204,7 +215,13 @@ export default function Cover() {
           </div>
         </div>
       </section>
-      <ProcessSection/>
+      <ProcessSection />
+      <About />
+      {/* <ServicesSection/> */}
+      <Services />
+      <AboutPage />
+      <ClientTestimonials />
+      <LetsPage />
     </div>
   );
 }

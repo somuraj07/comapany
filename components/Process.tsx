@@ -30,7 +30,7 @@ const steps = [
 
 export default function ProcessSection() {
   return (
-    <section className="py-32 relative overflow-hidden bg-white">
+    <section className="py-2 relative overflow-hidden bg-white">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div
@@ -85,10 +85,7 @@ export default function ProcessSection() {
                 </div>
 
                 {/* Connection Dot */}
-                <div
-                  className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#F54E02] glow-primary"
-                  style={{ transform: 'translate(-50%, -400%)' }}
-                />
+                
               </motion.div>
             ))}
           </div>

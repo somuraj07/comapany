@@ -24,7 +24,7 @@ export default function Navbar() {
     >
       {/* Logo */}
       <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-2 cursor-pointer">
-        <img src="/logo1.png" alt="Shraddha Logo S" className="w-40 h-11" />
+        <img src="/new.png" alt="Shraddha Logo S" className="w-40 h-11" />
       </motion.div>
 
       {/* Nav Links */}
