@@ -52,39 +52,36 @@ interface StatProps {
 }
 
 const servicesData: ServiceCardProps[] = [
-  { icon: CodeBracketIcon, title: "Web Development", description: "Custom web applications built with modern frameworks like React, Next.js, and Node.js. Scalable, fast, and secure.", animationDelay: 0 },
-  { icon: DevicePhoneMobileIcon, title: "Mobile Apps", description: "Native and cross-platform mobile applications for iOS and Android using React Native and Flutter.", animationDelay: 100 },
-  { icon: CloudIcon, title: "Cloud Solutions", description: "Cloud architecture, migration, and DevOps services on AWS, Azure, and Google Cloud Platform.", animationDelay: 200 },
-  { icon: CpuChipIcon, title: "AI & Machine Learning", description: "Intelligent solutions powered by machine learning, natural language processing, and computer vision.", animationDelay: 300 },
-  { icon: ShieldCheckIcon, title: "Cybersecurity", description: "Comprehensive security audits, penetration testing, and secure coding practices to protect your assets.", animationDelay: 400 },
-  { icon: AdjustmentsHorizontalIcon, title: "UI/UX Design", description: "User-centered design that creates intuitive, engaging, and visually stunning digital experiences.", animationDelay: 500 },
-];
-
-const processStepsData: ProcessStepProps[] = [
-  { number: 1, title: "Discovery", description: "We dive deep into understanding your business, goals, and challenges through comprehensive consultations.", icon: ChatBubbleBottomCenterTextIcon, delay: 0 },
-  { number: 2, title: "Strategy", description: "Our team crafts a tailored roadmap with technical architecture, timelines, and measurable milestones.", icon: LightBulbIcon, delay: 150 },
-  { number: 3, title: "Development", description: "Agile development with regular demos, iterative feedback, and transparent communication throughout.", icon: CodeBracketIcon, delay: 300 },
-  { number: 4, title: "Launch & Scale", description: "Seamless deployment with ongoing support, optimization, and scaling strategies for long term success.", icon: RocketLaunchIcon, delay: 450 },
-];
-
-const principles: SimpleDataProps[] = [
-  { icon: RocketLaunchIcon, text: "Innovation-Driven Solutions" },
-  { icon: UserGroupIcon, text: "Client-Centric Approach" },
-  { icon: ChartBarSquareIcon, text: "Results-Oriented Delivery" },
-  { icon: ShieldExclamationIcon, text: "Quality Assurance" },
-];
-
-const stats: StatProps[] = [
-  { value: "200+", label: "Projects Delivered" },
-  { value: "50+", label: "Happy Clients" },
-  { value: "10+", label: "Years Experience" },
-  { value: "99%", label: "Client Satisfaction" },
-];
-
-const testimonials = [
-  { name: "Asha R.", text: "Delivered on time with great communication." },
-  { name: "Rahul K.", text: "Transformed our product — conversion up 42%." },
-  { name: "Priya S.", text: "Professional and deeply technical." },
+  { 
+    icon: CpuChipIcon, 
+    title: "Software Solutions", 
+    description: "Custom software solutions tailored to your business needs, ensuring scalability, efficiency, and reliability.", 
+    animationDelay: 0 
+  },
+  { 
+    icon: DevicePhoneMobileIcon, 
+    title: "App Development", 
+    description: "Native and cross-platform mobile applications for iOS and Android using React Native and Flutter.", 
+    animationDelay: 100 
+  },
+  { 
+    icon: CodeBracketIcon, 
+    title: "Web Development", 
+    description: "Modern, responsive web applications using React, Next.js, and Node.js that are fast, secure, and scalable.", 
+    animationDelay: 200 
+  },
+  { 
+    icon: ChartBarSquareIcon, 
+    title: "Digital Marketing", 
+    description: "Comprehensive digital marketing strategies including SEO, SEM, social media, and content marketing to grow your brand.", 
+    animationDelay: 300 
+  },
+  { 
+    icon: AdjustmentsHorizontalIcon, 
+    title: "UI/UX Design", 
+    description: "User-centered designs that are visually appealing, intuitive, and enhance user engagement.", 
+    animationDelay: 400 
+  },
 ];
 
 const clients = ["Company A", "Company B", "Company C", "Company D", "Company E"];
@@ -104,45 +101,48 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, descriptio
   </div>
 );
 
-const ProcessStep: React.FC<ProcessStepProps> = ({ number, title, description, icon: Icon, delay }) => (
-  <div className="relative p-8 bg-white rounded-2xl shadow-md border border-gray-100 hover:shadow-xl transition duration-500 hover:-translate-y-1">
-    <div className="absolute -top-4 left-4 w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">{number}</div>
-    <div className="flex items-start mb-6 pt-4">
-      <div className="p-3 inline-flex items-center justify-center rounded-xl bg-orange-50/70 border border-orange-200">
-        <Icon className="w-6 h-6 text-orange-600" />
-      </div>
-      <div className="w-3 h-3 bg-orange-400 rounded-full ml-auto mt-2" />
-    </div>
-    <h3 className="text-xl font-extrabold text-gray-900 mb-2">{title}<span className="inline-block w-2 h-2 bg-orange-500 rounded-full ml-2" /></h3>
-    <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
-  </div>
-);
-
 // -------------------- MAIN COVER COMPONENT --------------------
 export default function Cover() {
   const [showSplash, setShowSplash] = useState(true);
-  const [prefersDark, setPrefersDark] = useState(false);
-  const [current, setCurrent] = useState(0);
   const tickerRef = useRef<HTMLDivElement | null>(null);
 
-  const goTo = (index: number) => setCurrent(index);
-
-  useEffect(() => { const t = setTimeout(() => setShowSplash(false), 4000); return () => clearTimeout(t); }, []);
-  useEffect(() => { setPrefersDark(window.matchMedia("(prefers-color-scheme: dark)").matches); }, []);
+  // Splash auto-hide after 4s
   useEffect(() => {
-    const ticker = tickerRef.current; if (!ticker) return;
-    let x = 0; const speed = 0.8; let rafId = 0;
-    const tick = () => { x += speed; const width = ticker.scrollWidth || 0; if (width > 0 && x >= width / 2) x = 0; ticker.scrollLeft = x; rafId = requestAnimationFrame(tick); };
-    rafId = requestAnimationFrame(tick);
+    const timer = setTimeout(() => setShowSplash(false), 4000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Infinite ticker scroll
+  useEffect(() => {
+    const ticker = tickerRef.current;
+    if (!ticker) return;
+    let x = 0;
+    const speed = 0.8;
+    let rafId: number;
+    const step = () => {
+      x += speed;
+      if (x >= ticker.scrollWidth / 2) x = 0;
+      ticker.scrollLeft = x;
+      rafId = requestAnimationFrame(step);
+    };
+    rafId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(rafId);
   }, [tickerRef.current]);
 
   return (
-    <div className="min-h-screen w-full relative font-sans bg-white dark:bg-black text-black dark:text-white transition-colors">
-      {/* SPLASH */}
-      {showSplash && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black"><video src="/ve.mp4" autoPlay muted playsInline className="w-full h-full object-cover" /></div>}
+    <div className="min-h-screen w-full relative font-sans bg-white text-gray-900 transition-colors">
 
-      {/* HERO */}
+      {/* SPLASH VIDEO */}
+      {showSplash && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-white cursor-pointer"
+          onClick={() => setShowSplash(false)}
+        >
+          <video src="/ve.mp4" autoPlay muted playsInline className="w-full h-full object-cover" />
+        </div>
+      )}
+
+      {/* HERO SECTION */}
       {!showSplash && (
         <header className="relative w-full h-[75vh] overflow-hidden">
           <video src="/ve.mp4" autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-40" />
@@ -153,10 +153,10 @@ export default function Cover() {
                 <SparklesIcon className="w-4 h-4 mr-2" /> Ready to transform?
               </motion.span>
               <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="mt-6 text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">Let's Build Something <span className="text-[#F54E02]">Extraordinary</span></motion.h1>
-              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.22 }} className="mt-4 text-lg text-gray-100/90 max-w-xl">Product design, engineering and cloud ops — end-to-end delivery that ships product-market fit.</motion.p>
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.22 }} className="mt-4 text-lg text-gray-800/90 max-w-xl">Product design, engineering and cloud ops — end-to-end delivery that ships product-market fit.</motion.p>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-8 flex gap-4">
                 <button className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[#F54E02] text-white font-semibold shadow hover:scale-[1.03] transition transform">Start Project <ArrowRightIcon className="w-4 h-4" /></button>
-                <button className="px-6 py-3 rounded-lg bg-white/20 border border-white/30 text-white font-semibold hover:bg-white/30 transition">View Work</button>
+                <button className="px-6 py-3 rounded-lg bg-white/20 border border-white/30 text-gray-900 font-semibold hover:bg-gray-50 transition">View Work</button>
               </motion.div>
             </div>
 
@@ -170,13 +170,12 @@ export default function Cover() {
               {/* PNG Image */}
               <div className="w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
                 <img
-                  src="/4.png" // <-- your PNG path here
+                  src="/4.png"
                   alt="Hero"
                   className="w-full h-full object-contain"
                 />
               </div>
             </motion.div>
-
           </div>
         </header>
       )}
@@ -185,7 +184,7 @@ export default function Cover() {
       <section className="py-6 bg-transparent">
         <div className="container mx-auto px-6 overflow-hidden relative">
           <div className="flex items-center gap-10 animate-scroll whitespace-nowrap" ref={tickerRef}>
-            {[...clients, ...clients, ...clients].map((c, i) => <div key={i} className="text-black dark:text-white font-semibold text-lg opacity-80 hover:opacity-100 transition">{c}</div>)}
+            {[...clients, ...clients, ...clients].map((c, i) => <div key={i} className="text-gray-900 font-semibold text-lg opacity-80 hover:opacity-100 transition">{c}</div>)}
           </div>
         </div>
         <style jsx>{`.animate-scroll { display: inline-flex; animation: scroll 18s linear infinite; } @keyframes scroll {0%{transform:translateX(0);}100%{transform:translateX(-50%);}}`}</style>
@@ -204,8 +203,6 @@ export default function Cover() {
           </div>
         </div>
       </section>
-
-      {/* ... Rest of your sections (About Us, Partner, Process, Testimonials) remain the same ... */}
     </div>
   );
 }
