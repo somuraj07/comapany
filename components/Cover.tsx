@@ -23,6 +23,7 @@ import {
   ShieldExclamationIcon,
   PlayIcon,
 } from "@heroicons/react/24/solid";
+import ProcessSection from "./Process";
 
 type HeroIcon = React.ElementType;
 
@@ -203,6 +204,7 @@ export default function Cover() {
           </div>
         </div>
       </section>
+      <ProcessSection/>
     </div>
   );
 }
