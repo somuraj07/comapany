@@ -11,11 +11,7 @@ const team = [
     role: "CEO",
     image: "/sujan.png", // replace with your PNG path
   },
-  {
-    name: "Gayathri",
-    role: "Co-Founder",
-    image: "/team.png", // replace with your PNG path
-  },
+  
   {
     name: "Roopa",
     role: "Head of Operations",
